@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title or 'Sistem Informasi Kelulusan SMAN 1 BATAUGA' }}</title>
+  <link rel="stylesheet" href="{{ url_for('custom_static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-area">
+        {% if logo_exists %}
+          <img src="{{ url_for('custom_static', filename='logo.jpg') }}" alt="Logo" class="logo">
+        {% endif %}
+        <div class="title-area">
+          <h1>Sistem Informasi Kelulusan SMAN 1 BATAUGA Tahun 2025</h1>
+        </div>
+      </div>
+    </header>
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="alert {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>© SMAN 1 BATAUGA</footer>
+  </div>
+</body>
+</html>

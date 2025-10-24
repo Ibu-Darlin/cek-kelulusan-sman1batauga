@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Panel Admin</h2>
+  <div class="actions">
+    <a class="btn" href="{{ url_for('logout') }}">Logout</a>
+    <a class="btn" href="{{ url_for('export_pdf_all') }}">Unduh Semua (PDF)</a>
+  </div>
+
+  <h3>Tambah Siswa</h3>
+  <form method="POST" action="{{ url_for('tambah') }}" class="inline-form">
+    <input type="text" name="nisn" placeholder="NISN" required>
+    <input type="text" name="nama" placeholder="Nama" required>
+    <input type="number" step="0.01" name="nilai" placeholder="Nilai" required>
+    <select name="status">
+      <option value="Lulus">Lulus</option>
+      <option value="Tidak Lulus">Tidak Lulus</option>
+    </select>
+    <button type="submit">Simpan</button>
+  </form>
+
+  <h3>Data Siswa</h3>
+  <table class="data-table">
+    <thead><tr><th>NISN</th><th>Nama</th><th>Nilai</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody>
+    {% for s in siswa %}
+      <tr>
+        <td>{{ s['nisn'] }}</td>
+        <td>{{ s['nama'] }}</td>
+        <td>{{ s['nilai'] }}</td>
+        <td>{{ s['status'] }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('ubah', id=s['id']) }}" class="edit-form">
+            <input type="text" name="nisn" value="{{ s['nisn'] }}" required>
+            <input type="text" name="nama" value="{{ s['nama'] }}" required>
+            <input type="number" step="0.01" name="nilai" value="{{ s['nilai'] }}" required>
+            <select name="status">
+              <option value="Lulus" {% if s['status']=='Lulus' %}selected{% endif %}>Lulus</option>
+              <option value="Tidak Lulus" {% if s['status']=='Tidak Lulus' %}selected{% endif %}>Tidak Lulus</option>
+            </select>
+            <button type="submit">Ubah</button>
+          </form>
+          <a class="btn-delete" href="{{ url_for('hapus', id=s['id']) }}" onclick="return confirm('Hapus data?')">Hapus</a>
+          <a class="btn" href="{{ url_for('export_pdf_single', nisn=s['nisn']) }}">PDF</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

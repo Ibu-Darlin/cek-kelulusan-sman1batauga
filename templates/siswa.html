@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Cek Kelulusan Siswa</h2>
+  <form method="POST">
+    <input type="text" name="nisn" placeholder="Masukkan NISN" required>
+    <button type="submit">Cek</button>
+  </form>
+
+  {% if notfound %}
+    <p class="notfound">NISN tidak ditemukan. Hubungi Tata Usaha.</p>
+  {% endif %}
+
+  {% if hasil %}
+    <div class="result">
+      <p><strong>Nama:</strong> {{ hasil['nama'] }}</p>
+      <p><strong>NISN:</strong> {{ hasil['nisn'] }}</p>
+      <p><strong>Nilai:</strong> {{ hasil['nilai'] }}</p>
+      <p><strong>Status:</strong> <span class="{{ 'lulus' if hasil['status']=='Lulus' else 'tidak-lulus' }}">{{ hasil['status'] }}</span></p>
+      <a class="btn" href="{{ url_for('export_pdf_single', nisn=hasil['nisn']) }}">Unduh PDF Hasil</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
